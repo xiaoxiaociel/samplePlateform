@@ -1,0 +1,17 @@
+/** @jsx React.DOM */
+var Mynav = require('samplemis:widget/ui/commonComponent/nav/nav.js');
+var NewProject = require('samplemis:widget/ui/newproject/component/newproject.js');
+
+var NewProjectApp = React.createClass({
+	render: function() {
+		return (
+		<div>
+			<Mynav/>
+			<NewProject />
+		</div>
+		);
+	}
+
+});
+
+module.exports = NewProjectApp;

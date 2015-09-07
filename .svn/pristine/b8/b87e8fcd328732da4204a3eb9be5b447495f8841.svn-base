@@ -1,0 +1,10 @@
+#newProcess{
+	margin: 0 20px;
+	.type_li{
+		list-style: none;
+	}
+	.form-group{
+		float: left;
+		margin-right: 15px;
+	}
+}

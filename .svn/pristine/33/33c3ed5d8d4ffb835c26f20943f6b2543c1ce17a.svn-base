@@ -1,0 +1,26 @@
+#ruleConfig{
+	.info{
+		span{
+			margin-right: 5px;
+		}
+		a{
+			margin-right: 5px;
+			cursor: pointer;
+		}
+	}
+}
+.mymodal{
+	.form-group{
+		display: inline-block;
+		width: 300px;
+	}
+	.modal-body{
+		padding: 15px 50px;
+		label{
+			vertical-align: top;
+			line-height: 30px;
+			width: 100px;
+			text-align: right;		
+		}
+	}
+}

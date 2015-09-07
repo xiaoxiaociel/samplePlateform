@@ -1,0 +1,57 @@
+/** @jsx React.DOM */
+var Modal = ReactBootstrap.Modal;
+var Button = ReactBootstrap.Button;
+var Input = ReactBootstrap.Input;
+
+var EditRuleInfoModal = React.createClass({
+    handleSubmit: function(){
+        var that = this;
+        var id = that.props.tempruleinfo.id;
+        var inputDesc = $("#editRuleInfoModal .desc");
+        var inputCache = $("#editRuleInfoModal .cache");
+        if(inputDesc.val() == ""){
+            inputDesc.css('border-color', 'red');
+        }else if(inputCache.val() == ""){
+            inputCache.css('border-color', 'red');
+        }else{
+            var dtd = this.props.handleEditRuleSubmit(id,inputDesc.val(),inputCache.val());
+            dtd.done(function(result){
+                if(result == 0){
+                    that.props.onRequestHide();
+                }else{
+                    alert(result);
+                }
+            });
+        }
+    },
+    render: function(){
+        var cacheNodes = this.props.cachelist.map(function(value, key) {
+          return (
+            <option key={key} value={value.id}>{value.name}</option>
+          );
+        });
+        return (
+          <Modal title='修改规则版本' id="editRuleInfoModal" onRequestHide={this.props.onRequestHide} className="mymodal">
+              <div className='modal-body'>
+                <div>
+                  <label>版本描述：</label>
+                  <Input type="text" name="remark" className="input desc" defaultValue={this.props.tempruleinfo.desc}/>
+                </div>
+                <div>
+                  <label>cache影响：</label>
+                  <Input type='select' name="cache" className="input cache" defaultValue={this.props.tempruleinfo.cache}>
+                    <option value='0'>不设置</option>
+                    {cacheNodes}
+                  </Input>
+                </div>
+              </div>
+              <div className='modal-footer'>
+                <Button onClick={this.handleSubmit}>确认</Button>
+                <Button onClick={this.props.onRequestHide}>关闭</Button>
+              </div>
+            </Modal>      
+      );
+    }
+});
+
+module.exports = EditRuleInfoModal;

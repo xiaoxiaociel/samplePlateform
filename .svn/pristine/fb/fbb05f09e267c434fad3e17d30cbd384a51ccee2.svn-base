@@ -1,0 +1,55 @@
+var Route = ReactRouter.Routes;
+var Link = ReactRouter.Link;
+var RouteHandler =ReactRouter.RouteHandler;
+
+var routes = (
+  <Route path="/" handler={RouteApp}>
+    <Route name="addprocess" path="/addprocess" handler={AddProcess}></Route>
+    <Route name="addproject" path="/addproject" handler={AddProject}></Route>
+    <Route name="processlist" path="/processlist" handler={ProcessList}></Route>
+    <Route name="projectlist" path="/projectlist" handler={ProjectList}></Route>
+  </Route>
+);
+
+var RouteApp = React.createClass({
+	//记录绑定的react view
+	addView: function(name, view){
+		this[name] = view;
+		view['router'] = this;
+	},
+
+	changeView: function(targetView){
+		var currentView = this.currentView;
+		if(currentView){
+			currentView.hide();
+		}
+
+		targetView.show();
+		this.currentView = targetView;
+	},
+	render: function(){
+		return (){
+			<div>
+				<RouteHandler/>
+			</div>
+		}
+	},
+	indexPage: function(){
+		this.changeView(this.addProcess);
+	},
+	productPage: function(){
+		this.changeView(this.addProject);
+	},
+	install: function(){
+		var that = this;
+		this.addView('addProcess',React.render())
+
+		//start router
+        ReactRouter.run(routes, function (Handler, states) {
+            var type = (states.pathname.replace('/', '') || 'index') + 'Page';
+            try {
+                that[type]();
+            } catch (e) {}
+        });
+	}
+})

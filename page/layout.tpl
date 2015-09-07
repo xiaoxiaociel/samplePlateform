@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+{%* 自定义变量 *%}
+{%block name="block_assign"%}
+{%$language="zh-CN" scope="global"%}
+{%/block%}
+{%html%}
+<!--STATUS OK-->
+    {%head%}
+        {%* 头部meta，seo相关可以写在这里面 *%}
+        {%block name="block_meta"%}
+            <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+            <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=0">
+        {%/block%}
+        {%* 页面title *%}
+        <title>{%block name="block_title"%}抽样平台{%/block%}</title>
+        {%* 头部js *%}
+        {%block name="block_head_js"%}
+            <script src='/static/js/core.js'></script>
+        {%/block%}
+
+        {%* 头部css *%}
+        {%block name="block_head_css"%}
+            <link rel="stylesheet" href="/static/css/core.less"/>  
+        {%/block%}    
+    {%/head%}
+    {%body class="$language $dir"%}
+        {%block name="block_content"%}
+            <div id="main" class="wrapper">
+            </div>
+        {%/block%}
+        {%* 底部js区域 *%}
+        {%block name="block_foot_js"%}{%/block%}
+        {%block name="block_logic_js"%}{%/block%}
+    {%/body%}
+{%/html%}

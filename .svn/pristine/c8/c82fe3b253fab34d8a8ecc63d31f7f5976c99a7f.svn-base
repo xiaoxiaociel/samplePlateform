@@ -1,0 +1,97 @@
+// var uploadfile = 'http://tc-c2-img-browse0.tc.baidu.com:8181/receiver.php';
+// var uploadfile = 'http://cp01-rdqa-pool338.cp01.baidu.com:8888/receiver.php';    // 许润华
+var uploadfile = 'http://cq01-image-rdtest1001.vm.baidu.com:8181/receiver.php';
+var odp = '/home/img/odp';
+
+fis.config.set('project.fileType.text', 'jsx'); //*.jsx files are text file.
+fis.config.set('modules.parser.jsx', 'react');  //compile *.jsx with fis-parser-react plugin
+fis.config.set('roadmap.ext.jsx', 'js'); //*.jsx are exactly treat as *.js
+
+fis.config.merge({
+    namespace : "samplemis",
+    modules: {
+        parser: {
+            js: 'reactjs',
+            tpl: 'reactsmarty'
+        }
+    },
+    pack : {
+        "samplemis.js" : [
+            "widget/**.js"
+        ],
+        "samplemis.css" : [
+            "widget/**.css",
+            "widget/**.less"
+        ]
+    },
+    deploy : {
+            //使用fis release --dest remote来使用这个配置
+        remote : [
+            {
+                //如果配置了receiver，fis会把文件逐个post到接收端上
+                receiver : uploadfile,
+                //从产出的结果的static目录下找文件
+                from : '/template',
+                subOnly : true,
+                //保存到远端机器的/home/fis/www/static目录下
+                //这个参数会跟随post请求一起发送
+                to : odp + '/smarty/template',
+                // to : odp + '/smarty/sample/template',
+                //某些后缀的文件不进行上传
+                exclude : /.*\.(?:svn|cvs|tar|rar|psd|sh).*/
+            },{
+                //如果配置了receiver，fis会把文件逐个post到接收端上
+                receiver : uploadfile,
+                //从产出的结果的plugin目录下找文件
+                from : '/plugin',
+                //保存到远端机器的/home/fis/www/plugin目录下
+                subOnly : true, 
+                //这个参数会跟随post请求一起发送
+                // to : odp + '/smarty/plugin',
+                to : odp + '/smarty/sample/plugin',
+                //某些后缀的文件不进行上传
+                exclude : /.*\.(?:svn|cvs|tar|rar|psd|sh).*/
+            },            {
+                //如果配置了receiver，fis会把文件逐个post到接收端上
+                receiver : uploadfile,
+                //从产出的结果的static目录下找文件
+                from : '/static',
+                //上传目录从static下一级开始不包括static目录
+                subOnly : true, 
+                //保存到远端机器的/home/fis/www/static目录下
+                //这个参数会跟随post请求一起发送
+                to : odp + '/webroot/static',
+                //某些后缀的文件不进行上传
+                exclude : /.*\.(?:svn|cvs|tar|rar|psd|sh).*/
+            },
+            {
+                //如果配置了receiver，fis会把文件逐个post到接收端上
+                receiver : uploadfile,
+                //从产出的结果的config目录下找文件
+                from : '/config',
+                //保存到远端机器的/home/fis/www/config目录下
+                subOnly : true, 
+                //这个参数会跟随post请求一起发送
+                // to : odp + '/smarty/sample/config',
+                to : odp + '/smarty/config',
+                //某些后缀的文件不进行上传
+                exclude : /.*\.(?:svn|cvs|tar|rar|psd|sh).*/
+            }
+        ]
+    }
+});
+fis.config.get("roadmap.path").unshift({
+    reg : /^\/page\/(.+)\.js$/i,
+    isMod : true,
+    release : 'static/page/$1.js'
+});
+// fis.config.get( 'roadmap.path').unshift(
+//     {
+//         reg : /^\/page\/.*?([^\/]+)\.tpl$/i,
+//         isMod: true,
+//         release : '/template/samplemis/page/page.tpl',
+//         extras: {
+//             isPage: true
+//         }
+//     }
+// );

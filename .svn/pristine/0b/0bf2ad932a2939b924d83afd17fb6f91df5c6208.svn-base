@@ -1,0 +1,245 @@
+/** @jsx React.DOM */
+var ButtonGroup = ReactBootstrap.ButtonGroup;
+var Button = ReactBootstrap.Button;
+var TabbedArea = ReactBootstrap.TabbedArea;
+var TabPane = ReactBootstrap.TabPane;
+var ProcessRequire = require('samplemis:widget/ui/processrequire/component/processrequire.js');
+var SampleConfigApp = require('samplemis:widget/ui/sampleconfig/app.js');
+var RdAuditApp = require('samplemis:widget/ui/rdaudit/app.js');
+var ManagerAuditApp = require('samplemis:widget/ui/manageraudit/app.js');
+var OnlineApp = require('samplemis:widget/ui/online/app.js');
+var OfflineApp = require('samplemis:widget/ui/offline/app.js');
+var BaseMixin = require('samplemis:widget/ui/commonComponent/baseMixin/baseMixin.js');
+var ViewProcess = React.createClass({
+	mixins: [BaseMixin],
+	getInitialState: function(){
+		var Request = new Object();
+		Request = this.getRequest();
+		return {
+			taskid: Request['taskid'] || '',
+			isSampleInfo: false,
+			isSampleConfig: false,
+			isRdAudit: false,
+			isManagerAudit: false,
+			status: '',
+			sampleInfo: {'rd': {},'manager':{}},
+			username: ''
+		}
+	},
+	componentWillMount: function(){
+		var that = this;
+		var url = that.host + '/querytask?id=' + that.state.taskid;
+		this.doService(url,function(data){
+			that.setState({
+				sampleInfo: {
+					'taskid': data.id,
+					'type': data.type,
+				    'name': data.name,
+				    'desc': data.description,
+				    'duration': data.duration,
+				    'username': data.username,
+				    'rd': data.rd,
+				    'manager': data.manager,
+				    'authority': data.authority,
+				    'status': data.status
+			    },
+			    status: data.status
+			});
+		});	
+	},
+	checkState: function(){
+		var status = {
+			'0': {
+				'sampleinfo': '已废弃'
+			},
+			'1': {
+				'sampleinfo': '创建中'
+			},
+			'2': {
+				'sampleinfo': '已完成',
+				'sampleconfig': '配置中',
+				'rdaudit': '',
+				'manageraudit': '',
+				'online': '',
+				'offline': ''
+			},
+			'3': {
+				'sampleinfo': '已完成',
+				'sampleconfig': '已完成',
+				'rdaudit': '审核中',
+				'manageraudit': '',
+				'online': '',
+				'offline': ''
+			},
+			'4': {
+				'sampleinfo': '已完成',
+				'sampleconfig': '已完成',
+				'rdaudit': '已完成',
+				'manageraudit': '审核中',
+				'online': '',
+				'offline': ''
+			},
+			'5': {
+				'sampleinfo': '已完成',
+				'sampleconfig': '已完成',
+				'rdaudit': '已完成',
+				'manageraudit': '已完成',
+				'online': '待上线',
+				'offline': ''
+			},
+			'6': {
+				'sampleinfo': '已完成',
+				'sampleconfig': '已完成',
+				'rdaudit': '已完成',
+				'manageraudit': '已完成',
+				'online': '已上线',
+				'offline': ''
+			},
+			'7': {
+				'sampleinfo': '已完成',
+				'sampleconfig': '已完成',
+				'rdaudit': '已完成',
+				'manageraudit': '已完成',
+				'online': '已完成',
+				'offline': '已下线'
+			}
+		};
+		var sampleInfo = (
+			<div>
+				<span>抽样信息</span>
+				<br/>
+				<span>{this.state.sampleInfo.username}</span>
+				<br/>
+				<span>{this.state.status? status[this.state.status].sampleinfo : 'loading'}</span>
+			</div>
+		);
+		var sampleConfig = (
+			<div>
+				<span>抽样配置</span>
+				<br/>
+				<span>{this.state.sampleInfo.username}</span>
+				<br/>
+				<span>{this.state.status? status[this.state.status].sampleconfig : 'loading'}</span>
+			</div>
+		);
+		var rdAudit = (
+			<div>
+				<span>RD审核</span>
+				<br/>
+				<span>{this.state.sampleInfo.rd.name}</span>
+				<br/>
+				<span>{this.state.status? status[this.state.status].rdaudit : 'loading'}</span>
+			</div>
+		);
+		var managerAudit = (
+			<div>
+				<span>经理审核</span>
+				<br/>
+				<span>{this.state.sampleInfo.manager.name}</span>
+				<br/>
+				<span>{this.state.status? status[this.state.status].manageraudit : 'loading'}</span>
+			</div>
+		);
+		var online = (
+			<div>
+				<span>上线</span>
+				<br/>
+				<span>{this.state.sampleInfo.username}</span>
+				<br/>
+				<span>{this.state.status? status[this.state.status].online : 'loading'}</span>
+			</div>			
+		);
+		var offline = (
+			<div>
+				<span>下线</span>
+				<br/>
+				<span>{this.state.sampleInfo.username}</span>
+				<br/>
+				<span>{this.state.status? status[this.state.status].offline : 'loading'}</span>
+			</div>			
+		);
+		if(this.state.status == 0){
+			return (
+			  <TabbedArea defaultActiveKey={1} className="sampleTab" stacked bsStyle='pills'>
+			    <TabPane eventKey={1} tab={sampleInfo} id="step_1"><ProcessRequire sampleInfo={this.state.sampleInfo}/></TabPane>	    
+			  </TabbedArea>
+			);			
+		}
+		if(this.state.status == 1){
+			return (
+			  <TabbedArea defaultActiveKey={1} className="sampleTab" stacked bsStyle='pills'>
+			    <TabPane eventKey={1} tab={sampleInfo} id="step_1"><ProcessRequire sampleInfo={this.state.sampleInfo}/></TabPane>	    
+			  </TabbedArea>
+			);				
+		}
+		if(this.state.status == 2){
+			return (
+			  <TabbedArea defaultActiveKey={2} className="sampleTab" stacked bsStyle='pills'>
+			    <TabPane eventKey={1} tab={sampleInfo} id="step_1"><ProcessRequire sampleInfo={this.state.sampleInfo}/></TabPane>
+			    <TabPane eventKey={2} tab={sampleConfig} id="step_2"><SampleConfigApp status={this.state.status} taskid={this.state.taskid}/></TabPane>	    
+			  </TabbedArea>
+			);
+		}else if(this.state.status == 3){
+			return (
+			  <TabbedArea defaultActiveKey={3} className="sampleTab" stacked bsStyle='pills'>
+			    <TabPane eventKey={1} tab={sampleInfo} id="step_1" className="step"><ProcessRequire sampleInfo={this.state.sampleInfo}/></TabPane>
+			    <TabPane eventKey={2} tab={sampleConfig} id="step_2" className="step"><SampleConfigApp status={this.state.status} taskid={this.state.taskid}/></TabPane>
+			    <TabPane eventKey={3} tab={rdAudit} id="step_3"><RdAuditApp sampleInfo={this.state.sampleInfo}/></TabPane>    
+			  </TabbedArea>					
+			);
+		}else if(this.state.status == 4){
+			return (
+			  <TabbedArea defaultActiveKey={4} className="sampleTab" stacked bsStyle='pills'>
+			    <TabPane eventKey={1} tab={sampleInfo} id="step_1"><ProcessRequire sampleInfo={this.state.sampleInfo}/></TabPane>
+			    <TabPane eventKey={2} tab={sampleConfig} id="step_2"><SampleConfigApp status={this.state.status} taskid={this.state.taskid}/></TabPane>
+			    <TabPane eventKey={3} tab={rdAudit} id="step_3"><RdAuditApp sampleInfo={this.state.sampleInfo}/></TabPane>
+			    <TabPane eventKey={4} tab={managerAudit} id="step_4"><ManagerAuditApp sampleInfo={this.state.sampleInfo}/></TabPane>	    
+			  </TabbedArea>
+			);
+		}else if(this.state.status == 5){
+			return (
+			  <TabbedArea defaultActiveKey={5} className="sampleTab" stacked bsStyle='pills'>
+			    <TabPane eventKey={1} tab={sampleInfo} id="step_1"><ProcessRequire sampleInfo={this.state.sampleInfo}/></TabPane>
+			    <TabPane eventKey={2} tab={sampleConfig} id="step_2"><SampleConfigApp status={this.state.status} taskid={this.state.taskid}/></TabPane>
+			    <TabPane eventKey={3} tab={rdAudit} id="step_3"><RdAuditApp sampleInfo={this.state.sampleInfo}/></TabPane>
+			    <TabPane eventKey={4} tab={managerAudit} id="step_4"><ManagerAuditApp sampleInfo={this.state.sampleInfo}/></TabPane>	 
+			    <TabPane eventKey={5} tab={online} id="step_5"><OnlineApp sampleInfo={this.state.sampleInfo}/></TabPane>		    
+			  </TabbedArea>
+			);
+		}else if(this.state.status == 6){
+			return (
+			  <TabbedArea defaultActiveKey={5} className="sampleTab" stacked bsStyle='pills'>
+			    <TabPane eventKey={1} tab={sampleInfo} id="step_1"><ProcessRequire sampleInfo={this.state.sampleInfo}/></TabPane>
+			    <TabPane eventKey={2} tab={sampleConfig} id="step_2"><SampleConfigApp status={this.state.status} taskid={this.state.taskid}/></TabPane>
+			    <TabPane eventKey={3} tab={rdAudit} id="step_3"><RdAuditApp sampleInfo={this.state.sampleInfo}/></TabPane>
+			    <TabPane eventKey={4} tab={managerAudit} id="step_4"><ManagerAuditApp sampleInfo={this.state.sampleInfo}/></TabPane>	 
+			    <TabPane eventKey={5} tab={online} id="step_5"><OnlineApp sampleInfo={this.state.sampleInfo}/></TabPane>		    
+			  </TabbedArea>
+			);
+		}else if(this.state.status == 7){
+			return (
+			  <TabbedArea defaultActiveKey={6} className="sampleTab" stacked bsStyle='pills'>
+			    <TabPane eventKey={1} tab={sampleInfo} id="step_1"><ProcessRequire sampleInfo={this.state.sampleInfo}/></TabPane>
+			    <TabPane eventKey={2} tab={sampleConfig} id="step_2"><SampleConfigApp status={this.state.status} taskid={this.state.taskid}/></TabPane>
+			    <TabPane eventKey={3} tab={rdAudit} id="step_3"><RdAuditApp sampleInfo={this.state.sampleInfo}/></TabPane>
+			    <TabPane eventKey={4} tab={managerAudit} id="step_4"><ManagerAuditApp sampleInfo={this.state.sampleInfo}/></TabPane>	 
+			    <TabPane eventKey={5} tab={online} id="step_5"><OnlineApp sampleInfo={this.state.sampleInfo}/></TabPane>
+			    <TabPane eventKey={6} tab={offline} id="step_6"><OfflineApp/></TabPane>		    
+			  </TabbedArea>
+			);			
+		}else{
+			return (
+				<span></span>
+			)
+		}
+	},
+	render: function(){
+		return (
+			<div id="viewProcess">
+			    {this.checkState()}		    
+			</div>
+		);
+	}
+});
+
+module.exports = ViewProcess;

@@ -1,0 +1,20 @@
+/** @jsx React.DOM */
+var Mynav = require('samplemis:widget/ui/commonComponent/nav/nav.js');
+var NewProcess = require('samplemis:widget/ui/newprocess/component/newprocess.js');
+var Button = ReactBootstrap.Button;
+Input = ReactBootstrap.Input;
+ButtonInput = ReactBootstrap.ButtonInput;
+
+var NewProcessApp = React.createClass({
+	render: function() {
+		return (
+			<div>
+				<Mynav/>
+				<NewProcess/>
+			</div>
+		);
+	}
+
+});
+
+module.exports = NewProcessApp;

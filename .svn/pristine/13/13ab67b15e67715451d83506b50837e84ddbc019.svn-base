@@ -1,0 +1,17 @@
+/** @jsx React.DOM */
+var Mynav = require('samplemis:widget/ui/commonComponent/nav/nav.js');
+var ProcessList = require('samplemis:widget/ui/processlist/component/processlist.js');
+var ProcessListApp = React.createClass({
+
+	render: function() {
+		return (
+			<div>
+			<Mynav />
+			<ProcessList />
+			</div>
+		);
+	}
+
+});
+
+module.exports = ProcessListApp;

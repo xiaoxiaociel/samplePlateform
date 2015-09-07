@@ -1,0 +1,24 @@
+.allocate{
+	.input-select{
+		.form-group{
+			min-width: 120px;
+		}
+		.tab-content{
+			margin-top: 5px;
+		}
+	}
+	.btn{
+		margin-right: 5px;
+	}
+	.size{
+		.form-group{
+			width: 50px;
+		}
+	}
+	.form-group{
+		float: left;
+	}
+	.item{
+		margin-right: 5px;
+	}
+}

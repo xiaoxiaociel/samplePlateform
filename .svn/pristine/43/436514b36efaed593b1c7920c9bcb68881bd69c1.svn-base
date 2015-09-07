@@ -1,0 +1,7 @@
+template ^\/samplemis\/page\/processlist samplemis/page/processlist.tpl
+template ^\/samplemis\/page\/projectlist samplemis/page/projectlist.tpl
+template ^\/samplemis\/page\/newprocess samplemis/page/newprocess.tpl
+template ^\/samplemis\/page\/newproject samplemis/page/newproject.tpl
+template ^\/samplemis\/page\/participant samplemis/page/participant.tpl
+template ^\/samplemis\/page\/processrequire samplemis/page/processrequire.tpl
+template ^\/samplemis\/page\/sampleconfig samplemis/page/sampleconfig.tpl

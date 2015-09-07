@@ -1,0 +1,24 @@
+.title-panel{
+	font-weight: bold;
+	margin-top: 10px;
+	font-size: 13px;
+	color: #548099;
+}
+.modal_btn{
+	margin-top: 10px;
+}
+.table-panel{
+	margin-top: 10px;
+}
+#valueRegist{
+	.search-panel{
+		margin-top: 10px;
+		.search-query{
+			width: 200px;
+			float: left;
+		}
+	}
+	.btn{
+		margin-left: 5px;
+	}
+}

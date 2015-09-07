@@ -1,0 +1,19 @@
+{
+  "name": "samplemis",
+  "version": "0.0.1",
+  "description": "抽样平台",
+  "main": "fis-conf.js",
+  "directories": {
+    "test": "test"
+  },
+  "keywords": [
+    "sampling"
+  ],
+  "author": "wuxiaoxiao01",
+  "license": "ISC",
+  "dependencies": {
+    "fis-plus": "~0.5.x",
+    "fis-parser-reactjs": "~0.0.x",
+    "fis-parser-smarty": "~0.0.x"
+  }
+}

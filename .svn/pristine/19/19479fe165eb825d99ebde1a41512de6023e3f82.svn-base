@@ -1,0 +1,126 @@
+/** @jsx React.DOM */
+var Input = ReactBootstrap.Input;
+var TabbedArea = ReactBootstrap.TabbedArea;
+var TabPane = ReactBootstrap.TabPane;
+var ModalTrigger = ReactBootstrap.ModalTrigger;
+var Button = ReactBootstrap.Button;
+var DeleteSampleModal = require('samplemis:widget/ui/sampleconfig/component/deletesamplemodal.js');
+var BaseMixin = require('samplemis:widget/ui/commonComponent/baseMixin/baseMixin.js');
+var AllocateNode = React.createClass({
+	mixins: [BaseMixin],
+	getInitialState: function(){
+		return {
+			show: false,
+			btnShow: false,
+			userTypeList: []
+		};
+	},
+	componentWillMount: function(){
+		var that = this;
+		var dictUrl = that.host + '/querydict?type=2';
+		this.doService(dictUrl,function(data){
+			that.setState({
+				userTypeList: data
+			});
+		});
+	},
+	handleClick: function(e){
+		this.setState({
+			show: !this.state.show
+		});
+	},
+	handleSelect: function(){
+		if($('.allocate .select').val() == 0){
+			this.setState({
+				btnShow: false
+			});
+		}else if($('.allocate .select').val() == 1){
+			this.setState({
+				btnShow: true
+			});			
+		}
+	},
+	handleSubmit: function(e){
+		var sid = $(e.target).attr('data-id');
+		this.props.ajaxFileUpload(sid);
+	},
+	handleAddDict: function(e){
+		var sid = $(e.target).attr('data-sid');
+		var dicId = $(".userType").val();
+		this.props.handleAddDict(sid,dicId);
+	},
+	handleDeleteDict: function(e){
+		var sid = $(e.target).attr('data-sid');
+		this.props.handleDeleteDict(sid);
+	},
+	render: function(){
+		var that = this;
+		var userTypeNode = this.state.userTypeList.map(function(value,i){
+			return (
+				<option value={value.id}>{value.name}</option>
+			);
+		});
+		var value = that.props.value;
+		if(this.state.show){
+			return (
+			  <tr key={value.index} className="allocate">
+			    <td>{value.id}</td>
+			    <td className="size"><Input type="text" className="allocate-size" defaultValue={value.quota}/>%<Button>确认</Button></td>
+			    <td className="input-select">
+			      <TabbedArea>
+				      <TabPane eventKey={1} tab='query'>
+				      {that.state.btnShow ? 
+				      	<div className="item">
+					        <Input type="select" className="allocate-size select item" onChange={that.handleSelect} defaultValue="1">
+						        <option value="0">未配置</option>
+						        <option value="1">自定义字典</option>
+					        </Input> 
+						    <Input type="file" id="uploadFile" name="upload"></Input>
+						    <Button onClick={that.handleSubmit} data-id={value.id}>确认</Button>
+						 </div> : 
+						 <div className="item">
+					        <Input type="select" className="allocate-size select item" onChange={that.handleSelect} defaultValue="0">
+						        <option value="0">未配置</option>
+						        <option value="1">自定义字典</option>
+					        </Input> 
+						    <Button className="item" data-sid={value.id} onClick={that.handleDeleteDict}>确认</Button>
+						 </div>							
+					   }
+				      </TabPane>
+				      <TabPane eventKey={2} tab='user_type'>
+					      <Input type="select" name="userType" className="userType">
+						      <option value="0">不配置</option>
+						      {userTypeNode}
+					      </Input>
+						      <Button className="item" onClick={that.handleAddDict} data-sid={value.id}>确认</Button>
+				      </TabPane>
+				  </TabbedArea>
+			    </td>
+			    <td>
+				    <Button onClick={that.handleClick}>退出编辑模式</Button>
+			    </td>
+			  </tr>
+			);
+		}else{
+			return (
+			  <tr key={value.index} className="allocate">
+			    <td>{value.id}</td>
+			    <td>{value.quota}%</td>
+			    <td>
+			      <TabbedArea>
+				    <TabPane eventKey={1} tab='query'>{value.query_dict == null? '未配置': value.query_dict.name}</TabPane>
+				    <TabPane eventKey={2} tab='user_type'>{value.user_type_dict == null? '未配置': value.user_type_dict.name}</TabPane>
+				  </TabbedArea>
+			    </td>
+			    <td>
+				    <Button onClick={that.handleClick} className="btn">编辑模式</Button>
+				    <ModalTrigger modal={<DeleteSampleModal tempsampleid={that.props.tempsampleid} handleDeleteSampleSubmit={that.props.handleDeleteSampleSubmit}/>}>
+					    <Button onClick={that.props.handleEdit} data-id={value.id}>删除</Button>
+				    </ModalTrigger>
+			    </td>
+			  </tr>
+			);
+		}
+	}
+});
+module.exports = AllocateNode;

@@ -1,0 +1,58 @@
+/** @jsx React.DOM */
+var Modal = ReactBootstrap.Modal;
+var Button = ReactBootstrap.Button;
+var Input = ReactBootstrap.Input;
+
+var AddRuleModal = React.createClass({
+	handleSubmit: function(){
+		var that = this;
+		var inputdesc = $("#addRuleModal .desc");
+		var inputcache = $("#addRuleModal .cache");
+		if(inputdesc.val() == ""){
+			inputdesc.css('border-color', 'red');
+			return;
+		}else if(inputcache.val() == ""){
+			inputcache.css('border-color', 'red');
+			return;
+		}else{
+			var dtd = this.props.handleAddRuleSubmit(inputdesc.val(),inputcache.val());
+			dtd.done(function(result){
+				if(result == 0){
+					that.props.onRequestHide();
+				}else{
+					alert(result);
+				}
+			});
+		}		 
+	},
+	render: function(){
+		var serviceNodes = this.props.cachelist.map(function(value, key) {
+			return (
+				<option key={key} value={value.id}>{value.name}</option>
+			);
+		});
+		return (
+		  <Modal title='添加规则版本' id="addRuleModal" className="mymodal" onRequestHide={this.props.onRequestHide}>
+	        <div className='modal-body'>
+	          <div>
+		          <label>版本描述：</label>
+		          <Input type="text" name="remark" className="input desc"/>
+	          </div>
+	          <div>
+		          <label>cache影响：</label>
+		          <Input type='select' placeholder='select' name="cache" className="input cache">
+			          <option value='0'>不设置</option>
+		          {serviceNodes}
+		          </Input>
+	          </div>
+	        </div>
+	        <div className='modal-footer'>
+	          <Button onClick={this.handleSubmit}>确认</Button>
+	          <Button onClick={this.props.onRequestHide}>关闭</Button>
+	        </div>
+	      </Modal>			
+		);
+	}
+});
+
+module.exports = AddRuleModal;

@@ -1,0 +1,15 @@
+/** @jsx React.DOM */
+var Mynav = require('samplemis:widget/ui/commonComponent/nav/nav.js');
+var ViewProcess = require('samplemis:widget/ui/viewprocess/component/viewprocess.js');
+var ViewProcessApp = React.createClass({
+	render: function(){
+		return (
+			<div>
+				<Mynav/>
+				<ViewProcess/>
+			</div>
+		)
+	}
+});
+
+module.exports = ViewProcessApp;

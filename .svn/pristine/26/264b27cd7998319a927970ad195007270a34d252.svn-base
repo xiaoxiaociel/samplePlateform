@@ -1,0 +1,17 @@
+/** @jsx React.DOM */
+var Mynav = require('samplemis:widget/ui/commonComponent/nav/nav.js');
+var ProjectList = require('samplemis:widget/ui/projectlist/component/projectlist.js');
+var ProjectListApp = React.createClass({
+
+	render: function() {
+		return (
+			<div>
+				<Mynav />
+				<ProjectList />
+			</div>
+		);
+	}
+
+});
+
+module.exports = ProjectListApp;

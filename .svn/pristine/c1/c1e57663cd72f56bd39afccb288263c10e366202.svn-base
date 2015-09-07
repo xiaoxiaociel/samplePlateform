@@ -1,0 +1,10 @@
+#auditState{
+	.form-group{
+		float: left;
+		margin-right: 5px;
+	}
+	.btn{
+		margin-left: 50%;
+		margin-right: 50%;
+	}
+}

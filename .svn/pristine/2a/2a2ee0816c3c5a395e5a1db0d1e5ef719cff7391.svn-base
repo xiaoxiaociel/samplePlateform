@@ -1,0 +1,12 @@
+#processlist{
+	padding: 0 20px 0;
+	.processlist_table{
+		margin-top: 10px;
+	}
+	.process_label{
+		margin-left: 15px;
+	}
+	.process_checkbox{
+		margin-left: 5px;
+	}
+}

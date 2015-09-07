@@ -1,0 +1,18 @@
+#trafficManager{
+	.advanced{
+		margin-top: 10px;
+	}
+	.advanced{
+		label{
+			margin-left: 15px;
+		}
+		.tab-content{
+			margin-top: 10px;
+			margin-left: 10px;
+			margin-bottom: 10px;
+		}
+	}
+	#change_layer_btn{
+		display: none;
+	}
+}
